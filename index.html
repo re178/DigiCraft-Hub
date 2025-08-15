@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ===== META & SECURITY (best-effort for static hosting) ===== -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>[YourBrandName] — Websites & Digital Products</title>
+  <meta name="description" content="[Short description of your marketplace / portfolio]" />
+  <!-- Basic, inline Content Security Policy (limited on static hosting) -->
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self';
+                 img-src 'self' data: https: blob:;
+                 style-src 'self' 'unsafe-inline' https:;
+                 script-src 'self' 'unsafe-inline';
+                 connect-src 'self' https:;
+                 frame-ancestors 'none';">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <!-- ===== FONTS (optional, remove if you want zero externals) ===== -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+
+  <!-- ====== STYLE ====== -->
+  <style>
+    :root{
+      /* Professional, harmonious palette */
+      --bg:#0b1220;          /* page background */
+      --surface:#101a32;     /* cards/nav */
+      --muted:#9fb0d0;       /* subtext */
+      --text:#e9eeff;        /* main text */
+      --brand:#76e4f7;       /* accents primary */
+      --brand2:#8b5cf6;      /* accents secondary */
+      --ok:#10b981;          /* success */
+      --warn:#f59e0b;        /* warning */
+      --danger:#ef4444;      /* danger */
+      --outline:rgba(255,255,255,.08);
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1100px 600px at 80% -10%, rgba(139,92,246,.18), transparent 60%),
+        radial-gradient(900px 500px at -10% 30%, rgba(118,228,247,.18), transparent 60%),
+        var(--bg);
+      line-height:1.6; -webkit-font-smoothing:antialiased; scroll-behavior:smooth
+    }
+    .container{width:min(1180px,92%); margin-inline:auto}
+    a{color:var(--brand); text-decoration:none}
+    a:hover{text-decoration:underline}
+    /* Header / Nav */
+    header{
+      position:sticky; top:0; z-index:50; backdrop-filter: blur(10px);
+      background:linear-gradient(180deg, rgba(11,19,32,.92), rgba(11,19,32,.6));
+      border-bottom:1px solid var(--outline)
+    }
+    .nav{display:flex; align-items:center; justify-content:space-between; padding:14px 0}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px}
+    .dot{width:12px; height:12px; border-radius:50%;
+      background:linear-gradient(135deg,var(--brand),var(--brand2)); box-shadow:0 0 18px var(--brand)}
+    .links{display:flex; gap:18px; align-items:center}
+    .links a,.links button{color:var(--muted); font-weight:600; font-size:.95rem; background:none; border:none; cursor:pointer}
+    .btn{display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:10px 14px; border-radius:12px; border:1px solid var(--outline); color:var(--text); background:#0d1730; box-shadow:var(--shadow)}
+    .btn--primary{border:none; background:linear-gradient(135deg,var(--brand),var(--brand2)); color:#0a1225; font-weight:800}
+    .chip{border:1px solid var(--outline); border-radius:999px; padding:8px 12px; color:var(--muted)}
+    /* Sections */
+    section{padding:54px 0}
+    .section-title{font-size:1.6rem; margin:0 0 12px}
+    .section-sub{color:var(--muted); margin:0 0 22px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.00));
+      border:1px solid var(--outline); border-radius:var(--radius); box-shadow:var(--shadow)}
+    /* Hero */
+    .hero{display:grid; grid-template-columns:1.15fr .85fr; gap:24px; align-items:center; padding:66px 0 40px}
+    .hero h1{font-size:clamp(1.9rem, 3.4vw + .6rem, 3rem); line-height:1.1; margin:0 0 10px}
+    .lead{color:var(--muted); font-size:clamp(1rem, .9rem + .4vw, 1.1rem); margin:0 0 22px}
+    .pfp{
+      width:100%; aspect-ratio:1/1; border-radius:16px; border:1px dashed var(--outline); display:grid; place-items:center; color:var(--muted);
+      background:
+        radial-gradient(120px 120px at 20% 10%, rgba(118,228,247,.22), transparent 60%),
+        radial-gradient(160px 160px at 70% 80%, rgba(139,92,246,.22), transparent 60%),
+        #0c162b
+    }
+    /* Filters */
+    .filterbar{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0 18px}
+    .filterbar .chip[aria-pressed="true"]{background:linear-gradient(135deg,var(--brand),var(--brand2)); color:#0a1225; border-color:transparent}
+    /* Grids */
+    .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px}
+    .thumb{aspect-ratio:16/10; background:#0e1830 center/cover no-repeat; border-bottom:1px solid var(--outline)}
+    .card-body{padding:14px 16px}
+    .card h3{margin:4px 0 6px; font-size:1.08rem}
+    .tags{display:flex; gap:8px; flex-wrap:wrap}
+    .tag{font-size:.78rem; padding:6px 10px; border-radius:999px; border:1px solid var(--outline); color:var(--muted)}
+    /* About / Contact */
+    .two-col{display:grid; grid-template-columns:1fr 1fr; gap:22px}
+    form{display:grid; gap:12px}
+    input, textarea, select{
+      background:#0d1730; color:var(--text); border:1px solid var(--outline); border-radius:12px;
+      padding:12px 14px; outline:2px solid transparent; outline-offset:2px; font:inherit
+    }
+    input:focus, textarea:focus, select:focus{outline-color:rgba(118,228,247,.4)}
+    .muted{color:var(--muted)}
+
+    /* Modal (Ebooks / Products quick-view) */
+    .modal{position:fixed; inset:0; background:rgba(0,0,0,.6); display:none; align-items:center; justify-content:center; z-index:60}
+    .modal .dialog{background:#0f1a33; border:1px solid var(--outline); border-radius:16px; width:min(900px,94%); max-height:86vh; overflow:auto; box-shadow:var(--shadow); padding:18px}
+    .modal .top{display:flex; justify-content:space-between; align-items:center; margin-bottom:8px}
+    .modal .close{background:#122045; color:var(--text); border:1px solid var(--outline); border-radius:10px; padding:8px 10px; cursor:pointer}
+
+    /* Footer */
+    footer{padding:30px 0 60px; color:var(--muted); font-size:.95rem}
+
+    /* Responsive */
+    @media (max-width:1020px){ .hero{grid-template-columns:1fr} .grid{grid-template-columns:1fr 1fr} .two-col{grid-template-columns:1fr} }
+    @media (max-width:620px){ .grid{grid-template-columns:1fr} }
+  </style>
+</head>
+<body oncontextmenu="return false">
+
+  <!-- ===== Frame-busting (extra) ===== -->
+  <script>
+    if (top !== self) { top.location = self.location; }
+  </script>
+
+  <!-- ====== HEADER / NAV ====== -->
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <span class="dot" aria-hidden="true"></span>
+        <span>[YourBrandName]</span>
+      </div>
+      <nav class="links">
+        <a href="#websites">Websites</a>
+        <a href="#products">Digital Products</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <!-- Quick-open modal of all products (optional) -->
+        <button id="openAllProducts">Ebooks & Templates</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ====== HERO / WELCOME ====== -->
+    <section class="hero" id="home">
+      <div>
+        <h1>Welcome to <span style="background:linear-gradient(135deg,var(--brand),var(--brand2)); -webkit-background-clip:text; background-clip:text; color:transparent">[YourBrandName]</span></h1>
+        <p class="lead">Custom websites and digital products crafted for <strong>real results</strong>. Explore ready-made designs, order a tailored site, or grab high-quality ebooks & templates.</p>
+        <div class="filterbar">
+          <a class="btn btn--primary" href="#websites">Explore Websites</a>
+          <a class="btn" href="#products">Browse Digital Products</a>
+          <a class="btn" href="#contact">Order / Customize</a>
+        </div>
+        <p class="muted">📍 NAIROBI, KENYA · ✉️ <a href="mailto:[YourEmailHere]">[YourEmailHere]</a> · ☎ [YourPhoneHere]</p>
+      </div>
+      <div class="card pfp" id="profileBox">
+        <!-- Replace with your hosted image URL or local file in repo -->
+        <!-- Example: <img src="https://raw.githubusercontent.com/[YourGitHubUser]/[Repo]/main/profile.jpg" alt="[YourName]" style="width:100%; height:100%; object-fit:cover; border-radius:16px"> -->
+        <span class="muted">Add your profile photo here</span>
+      </div>
+    </section>
+
+    <!-- ====== WEBSITES SECTION ====== -->
+    <section id="websites">
+      <h2 class="section-title">Websites</h2>
+      <p class="section-sub">Choose a category to see ready designs. Click <em>Order/Customize</em> to request changes or a bespoke build.</p>
+
+      <!-- Category explanations (edit as you like) -->
+      <div class="two-col">
+        <div class="card" style="padding:16px">
+          <h3 style="margin:4px 0 10px">Categories & Uses</h3>
+          <ul>
+            <li><strong>Tourism:</strong> Promote destinations, tours, and bookings.</li>
+            <li><strong>Business:</strong> Company profile, services, and lead capture.</li>
+            <li><strong>Education:</strong> Courses, enrollments, and resources.</li>
+            <li><strong>E-commerce:</strong> Sell products with catalog & checkout (via external platform).</li>
+            <li><strong>Real Estate:</strong> Property listings, maps, and inquiries.</li>
+            <li><strong>Portfolio/Personal:</strong> Showcase skills, projects, and contact.</li>
+          </ul>
+        </div>
+        <div class="card" style="padding:16px">
+          <h3 style="margin:4px 0 10px">How it works</h3>
+          <ol>
+            <li>Filter by category below.</li>
+            <li>Open a design and review features.</li>
+            <li>Click <em>Order/Customize</em> and describe what you need.</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filterbar" id="webFilters">
+        <button class="chip" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" data-filter="tourism">Tourism</button>
+        <button class="chip" data-filter="business">Business</button>
+        <button class="chip" data-filter="education">Education</button>
+        <button class="chip" data-filter="ecommerce">E-commerce</button>
+        <button class="chip" data-filter="realestate">Real Estate</button>
+        <button class="chip" data-filter="portfolio">Portfolio</button>
+      </div>
+
+      <!-- Website Cards -->
+      <div class="grid" id="webGrid">
+        <!-- ===== SAMPLE CARD (duplicate & edit) ===== -->
+        <article class="card" data-cat="tourism">
+          <div class="thumb" style="background-image:url('[TourismImageURL]')"></div>
+          <div class="card-body">
+            <h3>[Tourism Site — Title]</h3>
+            <p class="muted">Clean itinerary pages, photo galleries, and booking CTA.</p>
+            <div class="tags">
+              <span class="tag">Fast</span><span class="tag">SEO</span><span class="tag">Mobile</span>
+            </div>
+            <div style="display:flex; gap:8px; margin-top:10px">
+              <a class="btn" href="[LivePreviewLink]" target="_blank" rel="noopener">Preview</a>
+              <button class="btn btn--primary order-btn" data-product="Tourism Website — [Title]">Order/Customize</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-cat="business">
+          <div class="thumb" style="background-image:url('[BusinessImageURL]')"></div>
+          <div class="card-body">
+            <h3>[Business Site — Title]</h3>
+            <p class="muted">Service pages, testimonials, and strong lead capture.</p>
+            <div class="tags"><span class="tag">CMS</span><span class="tag">Branding</span></div>
+            <div style="display:flex; gap:8px; margin-top:10px">
+              <a class="btn" href="[LivePreviewLink]" target="_blank" rel="noopener">Preview</a>
+              <button class="btn btn--primary order-btn" data-product="Business Website — [Title]">Order/Customize</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-cat="education">
+          <div class="thumb" style="background-image:url('[EducationImageURL]')"></div>
+          <div class="card-body">
+            <h3>[Education Site — Title]</h3>
+            <p class="muted">Courses, enroll forms, and resource libraries.</p>
+            <div class="tags"><span class="tag">Accessible</span><span class="tag">Forms</span></div>
+            <div style="display:flex; gap:8px; margin-top:10px">
+              <a class="btn" href="[LivePreviewLink]" target="_blank" rel="noopener">Preview</a>
+              <button class="btn btn--primary order-btn" data-product="Education Website — [Title]">Order/Customize</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Add more cards for ecommerce, realestate, portfolio... -->
+      </div>
+    </section>
+
+    <!-- ====== DIGITAL PRODUCTS ====== -->
+    <section id="products">
+      <h2 class="section-title">Digital Products</h2>
+      <p class="section-sub">Ebooks, social media templates, graphics, and more. Click any product to get it instantly.</p>
+
+      <!-- Filters -->
+      <div class="filterbar" id="prodFilters">
+        <button class="chip" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" data-filter="ebooks">Ebooks</button>
+        <button class="chip" data-filter="templates">Social Media Templates</button>
+        <button class="chip" data-filter="graphics">Graphics</button>
+      </div>
+
+      <!-- Product Cards -->
+      <div class="grid" id="prodGrid">
+        <!-- SAMPLE PRODUCT -->
+        <article class="card" data-cat="ebooks">
+          <div class="thumb" style="background-image:url('[EbookCoverURL]')"></div>
+          <div class="card-body">
+            <h3>[From Zero to AI Income]</h3>
+            <p class="muted">[Turn your curiosity into cash! 🚀 This friendly yet professional guide walks you step-by-step from knowing nothing about AI to building real, sustainable online income streams..]</p>
+            <div class="tags"><span class="tag">PDF</span><span class="tag">Actionable</span></div>
+            <div style="display:flex; gap:8px; margin-top:10px">
+              <a class="btn btn--primary" href="[https://silesiray.gumroad.com/l/idfhi]" target="_blank" rel="noopener">Get Now</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-cat="templates">
+          <div class="thumb" style="background-image:url('[TemplateCoverURL]')"></div>
+          <div class="card-body">
+            <h3>[Social Pack — Title]</h3>
+            <p class="muted">Editable posts, stories, and reels templates.</p>
+            <div class="tags"><span class="tag">Canva</span><span class="tag">PSD</span></div>
+            <div style="display:flex; gap:8px; margin-top:10px">
+              <a class="btn btn--primary" href="[ProductLinkHere]" target="_blank" rel="noopener">Get Now</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="card" data-cat="graphics">
+          <div class="thumb" style="background-image:url('[GraphicsCoverURL]')"></div>
+          <div class="card-body">
+            <h3>[Icon/Illustration Pack]</h3>
+            <p class="muted">Vector icons & illustrations for web and apps.</p>
+            <div class="tags"><span class="tag">SVG</span><span class="tag">PNG</span></div>
+            <div style="display:flex; gap:8px; margin-top:10px">
+              <a class="btn btn--primary" href="[ProductLinkHere]" target="_blank" rel="noopener">Get Now</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ====== ABOUT ====== -->
+    <section id="about">
+      <h2 class="section-title">About</h2>
+      <p class="section-sub">Who I am and why I build.</p>
+      <div class="two-col">
+        <div class="card" style="padding:16px">
+          <p>Hi, I’m [YourName]. I help businesses and creators with high-quality websites and digital products that are fast, accessible, and simple to maintain.</p>
+          <ul>
+            <li>✅ Clean UI & responsive design</li>
+            <li>✅ Performance & SEO focused</li>
+            <li>✅ Real-world outcomes (leads, sales, engagement)</li>
+          </ul>
+        </div>
+        <div class="card" style="padding:16px">
+          <h3 style="margin:6px 0 10px">Highlights</h3>
+          <ul>
+            <li>🚀 Launched [X] sites across [Industries]</li>
+            <li>🧠 Self-taught + [Certifications]</li>
+            <li>🤝 Worked with [Startups/Clients]</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== ORDER / CUSTOMIZE ====== -->
+    <section id="contact">
+      <h2 class="section-title">Order / Customize</h2>
+      <p class="section-sub">Tell me what you need. I’ll reply quickly with next steps.</p>
+
+      <div class="two-col">
+        <div class="card" style="padding:18px">
+          <!-- NOTE: This submits to your external handler (Netlify Forms, Formspree, Google Form, etc.) -->
+          <form id="orderForm" method="POST" action="[YourBackendOrFormHandlerLinkHere]" enctype="multipart/form-data">
+            <input type="hidden" name="formName" value="OrderRequest">
+            <!-- Honeypot (bot trap) -->
+            <input type="text" name="website" autocomplete="off" tabindex="-1" style="position:absolute; left:-9999px; opacity:0">
+
+            <label>
+              Full Name
+              <input type="text" name="name" placeholder="Your name" required>
+            </label>
+
+            <label>
+              Email
+              <input type="email" name="email" placeholder="[YourEmailHere]" required>
+            </label>
+
+            <label>
+              Category
+              <select name="category" required>
+                <option value="">Select...</option>
+                <option>Tourism Website</option>
+                <option>Business Website</option>
+                <option>Education Website</option>
+                <option>E-commerce Website</option>
+                <option>Real Estate Website</option>
+                <option>Portfolio/Personal Site</option>
+                <option>Ebook</option>
+                <option>Social Media Templates</option>
+                <option>Graphics</option>
+              </select>
+            </label>
+
+            <label>
+              Specific Requirements
+              <textarea name="requirements" rows="5" placeholder="Describe features, pages, styles, colors, examples…" required></textarea>
+            </label>
+
+            <label>
+              Reference File (optional)
+              <input type="file" name="reference" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.zip">
+            </label>
+
+            <button class="btn btn--primary" type="submit">Send Order</button>
+            <p class="muted" style="margin:6px 0 0">Your data is sent securely to your handler at <code>[YourBackendOrFormHandlerLinkHere]</code>. Do not share sensitive info.</p>
+          </form>
+        </div>
+
+        <div class="card" style="padding:18px">
+          <h3 style="margin:6px 0 10px">Direct</h3>
+          <p>Email: <a href="mailto:[YourEmailHere]">[YourEmailHere]</a><br>Phone/WhatsApp: [YourPhoneHere]</p>
+          <div class="filterbar" style="margin-top:8px">
+            <a class="chip" href="[YourSocialLinksHere - GitHub]" target="_blank" rel="noopener">GitHub</a>
+            <a class="chip" href="[YourSocialLinksHere - LinkedIn]" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="chip" href="[YourSocialLinksHere - Twitter/X]" target="_blank" rel="noopener">Twitter/X</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="container">
+    <hr style="border:0; height:1px; background:var(--outline); margin:0 0 18px">
+    <div style="display:flex; gap:10px; justify-content:space-between; flex-wrap:wrap">
+      <span>© <span id="year"></span> [YourBrandName]. All rights reserved.</span>
+      <div style="display:flex; gap:10px; flex-wrap:wrap">
+        <a href="#home">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ====== MODAL: QUICK VIEW ALL PRODUCTS (OPTIONAL) ====== -->
+  <div class="modal" id="productsModal" aria-hidden="true">
+    <div class="dialog">
+      <div class="top">
+        <h3 style="margin:0">Ebooks & Templates</h3>
+        <button class="close" id="closeProducts">Close</button>
+      </div>
+      <div class="grid">
+        <!-- Duplicate & fill with your items -->
+        <article class="card">
+          <div class="thumb" style="background-image:url('[ModalProductImageURL]')"></div>
+          <div class="card-body">
+            <h3>[Product Title]</h3>
+            <p class="muted">[Short description]</p>
+            <a class="btn btn--primary" href="[ProductLinkHere]" target="_blank" rel="noopener">Get Now</a>
+          </div>
+        </article>
+        <!-- Add more... -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== SCRIPTS ====== -->
+  <script>
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Disable select & copy (basic deterrent only)
+    document.addEventListener('selectstart', e => e.preventDefault());
+    document.addEventListener('copy', e => e.preventDefault());
+
+    // Simple filter logic (Websites)
+    const webFilters = document.getElementById('webFilters');
+    const webCards = [...document.querySelectorAll('#webGrid .card')];
+    if (webFilters){
+      webFilters.addEventListener('click', (e)=>{
+        if(e.target.matches('[data-filter]')){
+          const f = e.target.getAttribute('data-filter');
+          webFilters.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed','false'));
+          e.target.setAttribute('aria-pressed','true');
+          webCards.forEach(card=>{
+            const cat = card.getAttribute('data-cat');
+            card.style.display = (f==='all' || f===cat) ? '' : 'none';
+          });
+        }
+      });
+    }
+
+    // Simple filter logic (Products)
+    const prodFilters = document.getElementById('prodFilters');
+    const prodCards = [...document.querySelectorAll('#prodGrid .card')];
+    if (prodFilters){
+      prodFilters.addEventListener('click', (e)=>{
+        if(e.target.matches('[data-filter]')){
+          const f = e.target.getAttribute('data-filter');
+          prodFilters.querySelectorAll('.chip').forEach(c=>c.setAttribute('aria-pressed','false'));
+          e.target.setAttribute('aria-pressed','true');
+          prodCards.forEach(card=>{
+            const cat = card.getAttribute('data-cat');
+            card.style.display = (f==='all' || f===cat) ? '' : 'none';
+          });
+        }
+      });
+    }
+
+    // Open modal (Ebooks & Templates quick view)
+    const openAllBtn = document.getElementById('openAllProducts');
+    const productsModal = document.getElementById('productsModal');
+    const closeProducts = document.getElementById('closeProducts');
+    if (openAllBtn && productsModal){
+      openAllBtn.addEventListener('click', ()=>{ productsModal.style.display = 'flex'; productsModal.setAttribute('aria-hidden','false'); });
+      closeProducts.addEventListener('click', ()=>{ productsModal.style.display = 'none'; productsModal.setAttribute('aria-hidden','true'); });
+      productsModal.addEventListener('click', (e)=>{ if(e.target === productsModal){ productsModal.style.display='none'; productsModal.setAttribute('aria-hidden','true'); } });
+    }
+
+    // Route "Order/Customize" button to form with prefilled product
+    document.addEventListener('click', (e)=>{
+      const btn = e.target.closest('.order-btn');
+      if(!btn) return;
+      const product = btn.getAttribute('data-product') || '';
+      // Scroll to form and prefill requirements header
+      const form = document.getElementById('orderForm');
+      if(form){
+        document.querySelector('a[href="#contact"]')?.scrollIntoView({behavior:'smooth'});
+        const ta = form.querySelector('textarea[name="requirements"]');
+        if(ta && product){
+          ta.value = `Project: ${product}\n\nDescribe your customizations (colors, pages, features, examples):\n- \n- \n- \n`;
+          document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+        }
+      }
+    });
+
+    // Gentle client-side validation & spam trap
+    const form = document.getElementById('orderForm');
+    if(form){
+      form.addEventListener('submit', (e)=>{
+        // Honeypot: block if filled
+        if (form.website && form.website.value.trim() !== '') {
+          e.preventDefault();
+          alert('Spam detected.');
+          return false;
+        }
+        // Confirm external handler present
+        if (form.getAttribute('action') === '[YourBackendOrFormHandlerLinkHere]') {
+          e.preventDefault();
+          alert('TODO: Replace [YourBackendOrFormHandlerLinkHere] in the form action with your real endpoint.');
+          return false;
+        }
+      });
+    }
+  </script>
+</body>
+</html>
